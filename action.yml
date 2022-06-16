@@ -12,9 +12,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo ${{ inputs.aws-profile-source }}.
+    - run: cat ${{ inputs.aws-profile-source }}.
       shell: bash
-    - run: copy ${{ inputs.aws-profile-source }} ~/.aws/credentials
+    - run: cp ${{ inputs.aws-profile-source }} ~/.aws/credentials
       shell: bash          
     - run: cat ~/.aws/credentials
       shell: bash    
