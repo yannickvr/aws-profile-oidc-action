@@ -9,6 +9,12 @@ inputs:
     description: 'AWS Web Identity Token file location'
     required: true
     default: '~/.aws/web_identity_token_file'
+  actions-id-token-request-token:
+    description: 'some token'
+    required: true
+  actions-id-token-request-url:
+    description: 'some request'
+    required: true   
 runs:
   using: "composite"
   steps:
@@ -16,5 +22,5 @@ runs:
       shell: bash          
     - run: cp ${{ inputs.aws-profile-source }} ~/.aws/credentials
       shell: bash            
-    - run: curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r '.value' > ${{ inputs.aws-token-file-location }}
+    - run: curl -s -H "Authorization: bearer ${{ inputs.actions-id-token-request-token }}" "${{ inputs.actions-id-token-request-url }}&audience=sts.amazonaws.com" | jq -r '.value' > ${{ inputs.aws-token-file-location }}
       shell: bash
