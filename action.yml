@@ -14,6 +14,8 @@ runs:
   steps:
     - run: cat ${{ inputs.aws-profile-source }}
       shell: bash
+    - run: mkdir ~/.aws
+      shell: bash          
     - run: cp ${{ inputs.aws-profile-source }} ~/.aws/credentials
       shell: bash          
     - run: cat ~/.aws/credentials
