@@ -1,22 +1,20 @@
 name: 'aws-profile-web-identity'
 description: 'Get a Github token and do some magic'
 inputs:
-  aws-profile-source:  # id of input
+  aws-profile-source:
     description: 'AWS profile source'
     required: true
     default: 'credentials.aws'
-#outputs:
-#  random-number:
-#    description: "Random number"
-#    value: ${{ steps.random-number-generator.outputs.random-number }}
+  aws-token-file-location:
+    description: 'AWS Web Identity Token file location'
+    required: true
+    default: '~/.aws/web_identity_token_file'
 runs:
   using: "composite"
   steps:
-    - run: cat ${{ inputs.aws-profile-source }}
-      shell: bash
-    - run: mkdir ~/.aws
+    - run: mkdir -p ~/.aws
       shell: bash          
     - run: cp ${{ inputs.aws-profile-source }} ~/.aws/credentials
-      shell: bash          
-    - run: cat ~/.aws/credentials
-      shell: bash    
+      shell: bash            
+    - run: curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r '.value' > ${{ inputs.aws-token-file-location }}
+      shell: bash
