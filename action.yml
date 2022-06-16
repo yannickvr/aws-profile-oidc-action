@@ -1,0 +1,20 @@
+name: 'aws-profile-web-identity'
+description: 'Get a Github token and do some magic'
+inputs:
+  aws-profile-source:  # id of input
+    description: 'AWS profile source'
+    required: true
+    default: 'credentials.aws'
+#outputs:
+#  random-number:
+#    description: "Random number"
+#    value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+    - run: echo ${{ inputs.aws-profile-source }}.
+      shell: bash
+    - run: copy ${{ inputs.aws-profile-source }} ~/.aws/credentials
+      shell: bash          
+    - run: cat ~/.aws/credentials
+      shell: bash    
